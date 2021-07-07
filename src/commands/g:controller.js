@@ -6,12 +6,13 @@ const command = {
     var Mustache = require('mustache');
     var Pluralize = require('pluralize')
 
-    const fs = require('fs');
+    const fs = require('fs'); //TODO: remover fs daqui
     const fileGenerator = require('../core/file-generator')
     const loadConf = require('../core/load-configuration')
 
     let json = loadConf.loadJsonFromYaml();
 
+    //TODO: ver como abstrair informação de projeto maven
     let destination = replaceAll(json.javaProjects.groupId, '.', '/')
     let mavenStructure = "src/main/java/"
     let packageDest = json.javaProjects.packageController;
@@ -30,6 +31,7 @@ const command = {
     fileGenerator.createDir(fullDestinationMain)
     fileGenerator.createDir(fullDestinationTest)
 
+    //TODO: remover full path e remover fs
     let templateController = fs.readFileSync('/home/jose-da-silva-neto/Desktop/github/nt/src/templates/controller/spring/controller-blank.mustache', 'utf8');
     let templateTestController = fs.readFileSync('/home/jose-da-silva-neto/Desktop/github/nt/src/templates/controller/spring/controller-test-blank.mustache', 'utf8');
 
@@ -39,11 +41,14 @@ const command = {
     var controllerFile = fullDestinationMain + "/" + model.class_name + ".java";
     var controllerTestFile = fullDestinationTest + "/" + model.class_name + "Test.java";
 
+    //TODO: verificar se file já existe e pedir confirmação para overwrite
     fileGenerator.createFile(controllerFile, output, print)
     fileGenerator.createFile(controllerTestFile, outputTest, print)
 
+    //TODO: printar de forma mais elegante e informativa
     print.success('controller blank generated')
 
+    //TODO: modularizar
     function replaceAll(string, search, replace) {
       return string.split(search).join(replace);
     }

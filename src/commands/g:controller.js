@@ -1,7 +1,7 @@
 const command = {
   name: 'g:controller',
   run: async toolbox => {
-    const { print, parameters } = toolbox
+    const { print, parameters, prompt } = toolbox
 
     var Mustache = require('mustache');
     var Pluralize = require('pluralize')
@@ -32,6 +32,7 @@ const command = {
     fileGenerator.createDir(fullDestinationTest)
 
     //TODO: remover full path e remover fs
+    //TODO: remover mustache 
     let templateController = fs.readFileSync('/home/jose-da-silva-neto/Desktop/github/nt/src/templates/controller/spring/controller-blank.mustache', 'utf8');
     let templateTestController = fs.readFileSync('/home/jose-da-silva-neto/Desktop/github/nt/src/templates/controller/spring/controller-test-blank.mustache', 'utf8');
 
@@ -41,12 +42,15 @@ const command = {
     var controllerFile = fullDestinationMain + "/" + model.class_name + ".java";
     var controllerTestFile = fullDestinationTest + "/" + model.class_name + "Test.java";
 
-    //TODO: verificar se file já existe e pedir confirmação para overwrite
-    fileGenerator.createFile(controllerFile, output, print)
-    fileGenerator.createFile(controllerTestFile, outputTest, print)
 
-    //TODO: printar de forma mais elegante e informativa
-    print.success('controller blank generated')
+    fileGenerator.createFile(controllerFile, output, prompt).then((file) => {
+      print.info('invoke src_main')
+      print.success(`   Generated ${packageDest}/${file}`)
+      fileGenerator.createFile(controllerTestFile, outputTest, prompt).then((file) => {
+        print.info('invoke test_unit')
+        print.success(`   Generated ${packageDest}/${file}`)
+      })
+    });
 
     //TODO: modularizar
     function replaceAll(string, search, replace) {

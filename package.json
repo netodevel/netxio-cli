@@ -26,6 +26,7 @@
     "gluegun": "latest"
   },
   "devDependencies": {
+    "escape-string-regexp": "^5.0.0",
     "jest": "^24.1.0",
     "js-yaml": "^4.0.0",
     "mustache": "^4.2.0",

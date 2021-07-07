@@ -1,0 +1,6 @@
+{
+    "javaProjects": {
+        "packageController": "controllers",
+        "groupId": "com.netodevel"
+    }
+}

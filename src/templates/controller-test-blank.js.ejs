@@ -1,4 +1,4 @@
-package {{package_value}};
+package <%= props.package_value %>;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,10 +7,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class {{class_name_test}} {
+public class <%= props.class_name_test %>{
 
     @Test
     public void testSomething() {
     }
-
 }

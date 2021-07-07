@@ -7,9 +7,6 @@ const command = {
       createController,
     } = toolbox
 
-
-    console.log(parameters)
-
     const name = parameters.first
     await createController(name)
   },

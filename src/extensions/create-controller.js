@@ -34,7 +34,7 @@ module.exports = (toolbox) => {
             route: Pluralize.plural(class_name_param.toLowerCase())
         }
 
-        let src_main_destination = `${(await destination).full_path_main}/${props.class_name}`
+        let src_main_destination = `${(await destination).full_path_main}/${props.class_name}.java`
         let awnser = await ask_overwrite(src_main_destination)
 
         if (awnser != null && awnser.name === "n") {
@@ -54,7 +54,7 @@ module.exports = (toolbox) => {
 
         await template.generate({
             template: 'controller-test-blank.js.ejs',
-            target: `${(await destination).full_path_test}/${props.class_name_test}`,
+            target: `${(await destination).full_path_test}/${props.class_name_test}.java`,
             props: props,
         })
         print.info('invoke test_unit')

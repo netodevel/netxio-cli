@@ -1,2 +1,3 @@
-# nt-cli
-my cli for my dev workflow
+# Nextio CLI
+
+A CLI to help my workflow of development

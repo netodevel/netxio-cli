@@ -8,11 +8,52 @@ module.exports = (toolbox) => {
         return config_file
     }
 
-    async function createMigration(params) {
+    async function generate(template_name, full_dest, props, full_name) {
+        await template.generate({
+            template: template_name, 
+            target: full_dest, 
+            props: props,
+        })
+
+        print.info('invoke liquibase')
+        print.success(`   Generated ${full_name}`)
+    }
+
+    function get_type_migration_name(migration_type){
+        switch(migration_type) {
+            case 'ct':
+                return 'create-table'
+                break
+            case 'adc':
+                return 'add-column'
+                break
+            default:
+                break
+        }
+    }
+
+    function verify_multiple_type(migration_type){
+        let split_type = migration_type.split(',')
+        if (split_type.length > 0){
+            return true
+        }
+        return false
+    }
+
+    async function createMigration(params, migration_type) {
+        if(migration_type === null) {
+            migration_type = 'ct'
+        }
+
+        let is_multiple_type = verify_multiple_type(migration_type)
+
+
         let config_file = await load_config_file()
         var date_time = dateTime.create().format('Y-m-d-HMS')
 
-        let full_name = `${date_time}-create-table-${params}`
+        let type_migration_name = get_type_migration_name(migration_type)
+
+        let full_name = `${date_time}-${type_migration_name}-${params}.xml`
         let full_dest = `src/main/resources/${config_file.liquibase.destination}/${full_name}`
 
         let props = {
@@ -31,14 +72,16 @@ module.exports = (toolbox) => {
             ]
         }
 
-        await template.generate({
-            template: 'create-table.js.ejs',
-            target: `${full_dest}`,
-            props: props,
-        })
-
-        print.info('invoke liquibase')
-        print.success(`   Generated ${full_name}`)
+        switch(migration_type) {
+            case 'ct':
+                await generate('create-table.js.ejs', full_dest, props, full_name)
+                break
+            case 'adc':
+                await generate('add-column.js.ejs', full_dest, props, full_name)
+                break
+            default:
+                print.error('type ' + migration_type + ' not supported')
+        }
     }
 
     toolbox.createMigration = createMigration

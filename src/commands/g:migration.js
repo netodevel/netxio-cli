@@ -8,7 +8,9 @@ const command = {
     } = toolbox
 
     const params = parameters.first
-    await createMigration(params)
+    const migration_type = parameters.options.t
+
+    await createMigration(params, migration_type)
   },
 }
 module.exports = command  

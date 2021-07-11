@@ -8,15 +8,15 @@ module.exports = (toolbox) => {
         return config_file
     }
 
-    async function generate(template_name, full_dest, props, full_name) {
+    async function generate(template_name, model) {
         await template.generate({
             template: template_name, 
-            target: full_dest, 
-            props: props,
+            target: model.full_dest, 
+            props: model.props,
         })
 
         print.info('invoke liquibase')
-        print.success(`   Generated ${full_name}`)
+        print.success(`   Generated ${model.full_name}`)
     }
 
     function get_type_migration_name(migration_type){
@@ -28,31 +28,22 @@ module.exports = (toolbox) => {
                 return 'add-column'
                 break
             default:
+                return ''
                 break
         }
     }
 
     function verify_multiple_type(migration_type){
         let split_type = migration_type.split(',')
-        if (split_type.length > 0){
+        if (split_type.length > 1){
             return true
         }
         return false
     }
 
-    async function createMigration(params, migration_type) {
-        if(migration_type === null) {
-            migration_type = 'ct'
-        }
-
-        let is_multiple_type = verify_multiple_type(migration_type)
-
-
-        let config_file = await load_config_file()
+    async function model_to_generate(params, migration_type, config_file){
         var date_time = dateTime.create().format('Y-m-d-HMS')
-
         let type_migration_name = get_type_migration_name(migration_type)
-
         let full_name = `${date_time}-${type_migration_name}-${params}.xml`
         let full_dest = `src/main/resources/${config_file.liquibase.destination}/${full_name}`
 
@@ -72,15 +63,61 @@ module.exports = (toolbox) => {
             ]
         }
 
+        let model = {
+            date_time: date_time,
+            type_migration_name: type_migration_name,
+            full_name: full_name,
+            full_dest: full_dest,
+            props: props
+        }
+
+        return model
+    }
+
+    async function execute_multiple_type(params, migration_type, config_file) {
+        let model = await model_to_generate(params, migration_type, config_file)
+
+        let split = migration_type.split(',')
+        let types = []
+
+        for (i = 0; i < split.length; i ++) {
+            types.push(split[i])
+        }
+
+        let new_props = model["props"]
+        new_props['types'] = types
+        model['props'] = new_props
+
+        await generate('multiple-types.js.ejs', model) 
+    }
+
+    async function execute_single_type(params, migration_type, config_file){
+        if(migration_type === null) {
+            migration_type = 'ct'
+        }
+       
+        let model = await model_to_generate(params, migration_type, config_file)
+
         switch(migration_type) {
             case 'ct':
-                await generate('create-table.js.ejs', full_dest, props, full_name)
+                await generate('create-table.js.ejs', model)
                 break
             case 'adc':
-                await generate('add-column.js.ejs', full_dest, props, full_name)
+                await generate('add-column.js.ejs', model) 
                 break
             default:
                 print.error('type ' + migration_type + ' not supported')
+        }
+    }
+
+    async function createMigration(params, migration_type) {
+        let is_multiple_type = verify_multiple_type(migration_type)
+        let config_file = await load_config_file()
+
+        if(is_multiple_type) {
+            execute_multiple_type(params, migration_type, config_file)
+        } else {
+            execute_single_type(params, migration_type, config_file)
         }
     }
 

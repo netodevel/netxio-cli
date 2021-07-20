@@ -41,15 +41,15 @@ module.exports = (toolbox) => {
         return false
     }
 
-    async function model_to_generate(params, migration_type, config_file){
+    async function model_to_generate(params, migration_type, config_file, table_name){
         var date_time = dateTime.create().format('Y-m-d-HMS')
         let type_migration_name = get_type_migration_name(migration_type)
-        let full_name = `${date_time}-${type_migration_name}-${params}.xml`
+        let full_name = `${date_time}-${params}.xml`
         let full_dest = `src/main/resources/${config_file.liquibase.destination}/${full_name}`
 
         let props = {
             changeset_id: 1,
-            table_name: params,
+            table_name: table_name,
             author: 'nt-cli',
             columns: [
                 {
@@ -74,8 +74,8 @@ module.exports = (toolbox) => {
         return model
     }
 
-    async function execute_multiple_type(params, migration_type, config_file) {
-        let model = await model_to_generate(params, migration_type, config_file)
+    async function execute_multiple_type(params, migration_type, config_file, table_name) {
+        let model = await model_to_generate(params, migration_type, config_file, table_name)
 
         let split = migration_type.split(',')
         let types = []
@@ -91,12 +91,12 @@ module.exports = (toolbox) => {
         await generate('multiple-types.js.ejs', model) 
     }
 
-    async function execute_single_type(params, migration_type, config_file){
+    async function execute_single_type(params, migration_type, config_file, table_name){
         if(migration_type === null) {
             migration_type = 'ct'
         }
        
-        let model = await model_to_generate(params, migration_type, config_file)
+        let model = await model_to_generate(params, migration_type, config_file, table_name)
 
         switch(migration_type) {
             case 'ct':
@@ -110,14 +110,14 @@ module.exports = (toolbox) => {
         }
     }
 
-    async function createMigration(params, migration_type) {
+    async function createMigration(params, migration_type, table_name) {
         let is_multiple_type = verify_multiple_type(migration_type)
         let config_file = await load_config_file()
 
         if(is_multiple_type) {
-            execute_multiple_type(params, migration_type, config_file)
+            execute_multiple_type(params, migration_type, config_file, table_name)
         } else {
-            execute_single_type(params, migration_type, config_file)
+            execute_single_type(params, migration_type, config_file, table_name)
         }
     }
 

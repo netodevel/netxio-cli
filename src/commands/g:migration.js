@@ -8,9 +8,10 @@ const command = {
     } = toolbox
 
     const params = parameters.first
-    const migration_type = parameters.options.t
+    const table_name = parameters.second
 
-    await createMigration(params, migration_type)
+    const migration_type = parameters.options.t
+    await createMigration(params, migration_type, table_name)
   },
 }
 module.exports = command  

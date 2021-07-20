@@ -34,6 +34,7 @@ module.exports = (toolbox) => {
     }
 
     function verify_multiple_type(migration_type){
+        if(migration_type == null) return false
         let split_type = migration_type.split(',')
         if (split_type.length > 1){
             return true
@@ -92,7 +93,7 @@ module.exports = (toolbox) => {
     }
 
     async function execute_single_type(params, migration_type, config_file, table_name){
-        if(migration_type === null) {
+        if(migration_type == null) {
             migration_type = 'ct'
         }
        

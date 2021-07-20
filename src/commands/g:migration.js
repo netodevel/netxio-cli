@@ -5,12 +5,24 @@ const command = {
     const {
       parameters,
       createMigration,
+      print,
     } = toolbox
 
     const params = parameters.first
-    const migration_type = parameters.options.t
+    const table_name = parameters.second
 
-    await createMigration(params, migration_type)
+    if (params == null) {
+      print.error('param[1] - migration_name can not be null ')
+      return
+    }
+
+    if (table_name == null) {
+      print.error('param[2] - table_name can not be null ')
+      return
+    }
+
+    const migration_type = parameters.options.t
+    await createMigration(params, migration_type, table_name)
   },
 }
 module.exports = command  

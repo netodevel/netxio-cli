@@ -15,7 +15,6 @@ module.exports = (toolbox) => {
             props: model.props,
         })
 
-        print.info('invoke liquibase')
         print.success(`   Generated ${model.full_name}`)
     }
 
@@ -102,6 +101,7 @@ module.exports = (toolbox) => {
         switch(migration_type) {
             case 'ct':
                 await generate('create-table.js.ejs', model)
+                await upsert_changelog_master(model.full_name, model.full_dest)
                 break
             case 'adc':
                 await generate('add-column.js.ejs', model) 
@@ -111,10 +111,22 @@ module.exports = (toolbox) => {
         }
     }
 
+    async function upsert_changelog_master(file_name_migration, full_dest) {
+        let model = {
+            full_name: "liquibase-changeLog.xml",
+            full_dest: 'src/main/resources/db/liquibase-changeLog.xml',
+            props: {
+                migration_name: `changelogs/${file_name_migration}`
+            }
+        };
+        generate('changelog-master.js.ejs', model);
+    }
+
     async function createMigration(params, migration_type, table_name) {
         let is_multiple_type = verify_multiple_type(migration_type)
         let config_file = await load_config_file()
 
+        print.info('invoke liquibase')
         if(is_multiple_type) {
             execute_multiple_type(params, migration_type, config_file, table_name)
         } else {

@@ -1,25 +1,39 @@
-# nt CLI
+# Netxio CLI
+A CLI for Agile Development.
 
-A CLI for nt.
+## Commands
+  nt              -                              
+  version (v)     Output the version number      
+  g:controller    Create new controller          
+  g:migration     Create new Liquibase Migration 
+  help (h)        -   
 
-## Customizing your CLI
+## Generate spring controllers
 
-Check out the documentation at https://github.com/infinitered/gluegun/tree/master/docs.
+```nt g:controller User```
+```shell 
+invoke src_main
+   Generated controllers/usersController
+invoke test_unit
+   Generated controllers/usersControllerTest
+```
+## Generate liquibase migrations
 
-## Publishing to NPM
+`nt g:migration create-table-users users`
+```shell 
+invoke liquibase
+   Generated 2021-07-25-144358-create-table-users.xml
+   Generated liquibase-changeLog.xml
+```
 
-To package your CLI up for NPM, do this:
-
-```shell
-$ npm login
-$ npm whoami
-$ npm lint
-$ npm test
-(if typescript, run `npm run build` here)
-$ npm publish
+### Multiple migration generator
+`nt g:migration create-table-users users -t adc,ct`
+```shell 
+invoke liquibase
+   Generated 2021-07-25-144358-create-table-users.xml
+   Generated liquibase-changeLog.xml
 ```
 
 # License
-
 MIT - see LICENSE
 

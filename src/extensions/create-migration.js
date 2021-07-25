@@ -89,6 +89,7 @@ module.exports = (toolbox) => {
         model['props'] = new_props
 
         await generate('multiple-types.js.ejs', model) 
+        await upsert_changelog_master(model.full_name, model.full_dest)
     }
 
     async function execute_single_type(params, migration_type, config_file, table_name){
@@ -105,6 +106,7 @@ module.exports = (toolbox) => {
                 break
             case 'adc':
                 await generate('add-column.js.ejs', model) 
+                await upsert_changelog_master(model.full_name, model.full_dest)
                 break
             default:
                 print.error('type ' + migration_type + ' not supported')
@@ -119,7 +121,21 @@ module.exports = (toolbox) => {
                 migration_name: `changelogs/${file_name_migration}`
             }
         };
-        generate('changelog-master.js.ejs', model);
+
+        if(filesystem.exists(model.full_dest) == false) {
+            generate('changelog-master.js.ejs', model);
+        } else {
+            let text = filesystem.read(model.full_dest);
+            let replacement = text.replace('</databaseChangeLog>', '')
+            let updated_text = replacement +  
+                `<include file="changelog/${file_name_migration}" relativeToChangelogFile="true"/>` + "\n" 
+                + "</databaseChangeLog>"
+
+            filesystem.write(model.full_dest, updated_text)
+
+            print.success('   Updated liquibase-changeLog.xml')
+        }
+
     }
 
     async function createMigration(params, migration_type, table_name) {

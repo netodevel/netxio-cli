@@ -5,10 +5,20 @@ const command = {
     const {
       parameters,
       createController,
+      print
     } = toolbox
 
     const name = parameters.first
-    await createController(name)
+    if (name == null) {
+      print.error('param[1] - controller name can not be null')
+      return
+    }
+
+    const package = parameters.second
+
+    console.log(package)
+
+    await createController(name, package)
   },
 }
 module.exports = command  

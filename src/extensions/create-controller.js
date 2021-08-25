@@ -23,14 +23,19 @@ module.exports = (toolbox) => {
         }
     }
 
-    async function createController(class_name_param) {
+    async function createController(class_name_param, package) {
         let config_file = await load_config_file()
         let destination = structureMaven(config_file)
+
+        let resolver_package = config_file.javaProjects.groupId;
+        if (package != null) {
+            resolver_package = resolver_package + "." + package;
+        }
 
         let props = {
             class_name: `${class_name_param}Controller`,
             class_name_test: `${class_name_param}ControllerTest`,
-            package_value: config_file.javaProjects.groupId,
+            package_value: resolver_package,
             route: Pluralize.plural(class_name_param.toLowerCase())
         }
 

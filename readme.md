@@ -1,5 +1,5 @@
 # Netxio CLI
-A CLI for Agile Development.
+A CLI for my development worfklow.
 
 ## Commands
   nt              -                              

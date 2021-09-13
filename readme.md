@@ -2,11 +2,12 @@
 A CLI for my development worfklow.
 
 ## Commands
-  nt              -                              
-  version (v)     Output the version number      
-  g:controller    Create new controller          
-  g:migration     Create new Liquibase Migration 
-  help (h)        -   
+  nt              -                                    
+  version (v)     Output the version number            
+  g:controller    Create new controller                
+  g:migration     Create new Liquibase Migration       
+  g:setup         Create nt.json to configure this cli 
+  help (h)       
 
 ## Generate spring controllers
 

@@ -7,8 +7,6 @@ async function structureMaven(config_json, package) {
     let group_id = replaceAll(config_json.javaProjects.groupId, '.', '/')
     let package_destination = package_dest(package, config_json.javaProjects.packageController);
 
-    console.log("package_destination: ", package_destination)
-
     let full_path = `${process.cwd()}/${struct.main_dir}/${group_id}/${package_destination}`
     let full_path_test = `${process.cwd()}/${struct.test_dir}/${group_id}/${package_destination}`
     let response = {

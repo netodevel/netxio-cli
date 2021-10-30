@@ -15,8 +15,6 @@ const command = {
     }
 
     const package_name = parameters.second
-    console.log(package_name)
-
     await createController(name, package_name)
   },
 }

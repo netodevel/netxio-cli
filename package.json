@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "eslint": "^7.30.0",
+    "eslint": "^8.1.0",
     "gluegun": "latest"
   },
   "devDependencies": {

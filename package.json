@@ -38,7 +38,7 @@
     "pluralize": "^8.0.0",
     "pom-parser": "^1.2.0",
     "prettier": "^1.12.1",
-    "standard": "^12.0.1"
+    "standard": "^16.0.4"
   },
   "jest": {
     "testEnvironment": "node"

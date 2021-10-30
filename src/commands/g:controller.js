@@ -14,11 +14,10 @@ const command = {
       return
     }
 
-    const package = parameters.second
+    const package_name = parameters.second
+    console.log(package_name)
 
-    console.log(package)
-
-    await createController(name, package)
+    await createController(name, package_name)
   },
 }
 module.exports = command  

@@ -2,27 +2,23 @@ const command = {
   name: 'g:migration',
   description: 'Create new Liquibase Migration',
   run: async toolbox => {
-    const {
-      parameters,
-      createMigration,
-      print,
-    } = toolbox
+    const { parameters, createMigration, print } = toolbox
 
     const params = parameters.first
-    const table_name = parameters.second
+    const tableName = parameters.second
 
     if (params == null) {
       print.error('param[1] - migration_name can not be null ')
       return
     }
 
-    if (table_name == null) {
-      print.error('param[2] - table_name can not be null ')
+    if (tableName == null) {
+      print.error('param[2] - tableName can not be null ')
       return
     }
 
-    const migration_type = parameters.options.t
-    await createMigration(params, migration_type, table_name)
-  },
+    const migrationType = parameters.options.t
+    await createMigration(params, migrationType, tableName)
+  }
 }
-module.exports = command  
+module.exports = command

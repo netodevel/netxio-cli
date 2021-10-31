@@ -1,7 +1,0 @@
-## config for java projects
-javaProjects:
-    groupId: com.netodevel
-    packageController: controllers
-
-
-

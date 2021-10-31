@@ -2,11 +2,7 @@ const command = {
   name: 'g:controller',
   description: 'Create new controller',
   run: async toolbox => {
-    const {
-      parameters,
-      createController,
-      print
-    } = toolbox
+    const { parameters, createController, print } = toolbox
 
     const name = parameters.first
     if (name == null) {
@@ -14,8 +10,8 @@ const command = {
       return
     }
 
-    const package_name = parameters.second
-    await createController(name, package_name)
-  },
+    const destinationPackage = parameters.second
+    await createController(name, destinationPackage)
+  }
 }
-module.exports = command  
+module.exports = command

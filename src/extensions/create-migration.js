@@ -2,12 +2,12 @@ module.exports = toolbox => {
   const { print, filesystem, template } = toolbox
   var dateTime = require('node-datetime')
 
-  async function load_config_file () {
+  async function load_config_file() {
     const config_file = filesystem.read('./nt.json', 'json')
     return config_file
   }
 
-  async function generate (template_name, model) {
+  async function generate(template_name, model) {
     await template.generate({
       template: template_name,
       target: model.full_dest,
@@ -17,7 +17,7 @@ module.exports = toolbox => {
     print.success(`   Generated ${model.full_name}`)
   }
 
-  function get_type_migration_name (migration_type) {
+  function get_type_migration_name(migration_type) {
     switch (migration_type) {
       case 'ct':
         return 'create-table'
@@ -31,7 +31,7 @@ module.exports = toolbox => {
     }
   }
 
-  function verify_multiple_type (migration_type) {
+  function verify_multiple_type(migration_type) {
     if (migration_type == null) return false
     let split_type = migration_type.split(',')
     if (split_type.length > 1) {
@@ -40,7 +40,7 @@ module.exports = toolbox => {
     return false
   }
 
-  async function model_to_generate (
+  async function model_to_generate(
     params,
     migration_type,
     config_file,
@@ -78,7 +78,7 @@ module.exports = toolbox => {
     return model
   }
 
-  async function execute_multiple_type (
+  async function execute_multiple_type(
     params,
     migration_type,
     config_file,
@@ -106,7 +106,7 @@ module.exports = toolbox => {
     await upsert_changelog_master(model.full_name, model.full_dest)
   }
 
-  async function execute_single_type (
+  async function execute_single_type(
     params,
     migration_type,
     config_file,
@@ -137,7 +137,7 @@ module.exports = toolbox => {
     }
   }
 
-  async function upsert_changelog_master (file_name_migration, full_dest) {
+  async function upsert_changelog_master(file_name_migration, full_dest) {
     let model = {
       full_name: 'liquibase-changeLog.xml',
       full_dest: 'src/main/resources/db/liquibase-changeLog.xml',
@@ -163,7 +163,7 @@ module.exports = toolbox => {
     }
   }
 
-  async function createMigration (params, migration_type, table_name) {
+  async function createMigration(params, migration_type, table_name) {
     let is_multiple_type = verify_multiple_type(migration_type)
     let config_file = await load_config_file()
 

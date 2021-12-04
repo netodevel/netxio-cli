@@ -1,37 +1,38 @@
 module.exports = toolbox => {
   const { print, filesystem, template } = toolbox
-  var pomParser = require('pom-parser')
+  const pomParser = require('pom-parser')
 
   async function generateSetup (parameters) {
     if (!filesystem.exists('pom.xml')) {
-      print.error('You need to run this command inside a maven project.')
+      print.error('pom.xml not found. you need to be inside a maven project')
+      return
     }
 
-    var opts = {
+    const opts = {
       filePath: process.cwd() + '/pom.xml'
     }
 
     pomParser.parse(opts, async function (err, pomResponse) {
       if (err) {
-        console.log('ERROR: ' + err)
+        print.error('ERROR: ' + err)
         process.exit(1)
       }
 
-      let json_pom = JSON.stringify(pomResponse.pomObject)
-      let json_obj = JSON.parse(json_pom)
+      const jsonPom = JSON.stringify(pomResponse.pomObject)
+      const jsonObj = JSON.parse(jsonPom)
 
-      let props_to = {
-        groupId: json_obj.project.groupid
+      const props = {
+        groupId: jsonObj.project.groupid
       }
 
       await template.generate({
         template: 'nt-json.js.ejs',
         target: process.cwd() + '/nt.json',
-        props: props_to
+        props: props
       })
 
       print.info('Invoke nt:setup')
-      print.success(`   Generated nt.json`)
+      print.success('   Generated nt.json')
     })
   }
 

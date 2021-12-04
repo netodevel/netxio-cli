@@ -1,9 +1,0 @@
-{
-  "javaProjects": {
-    "packageController": "controllers",
-    "groupId": "com.netodevel"
-  },
-  "liquibase": {
-    "destination": "db/changelogs"
-  }
-}

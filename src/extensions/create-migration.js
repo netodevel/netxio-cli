@@ -1,5 +1,6 @@
 module.exports = toolbox => {
   const { print, filesystem, template } = toolbox
+  const { ntIsConfigured } = require('../core/setup-validator')
   const dateTime = require('node-datetime')
 
   async function load_config_file () {
@@ -165,6 +166,12 @@ module.exports = toolbox => {
 
   async function createMigration (params, migration_type, table_name) {
     const is_multiple_type = verify_multiple_type(migration_type)
+
+    const setupConfigured = await ntIsConfigured(filesystem, print)
+    if (!setupConfigured) {
+      return
+    }
+
     const config_file = await load_config_file()
 
     print.info('invoke liquibase')

@@ -167,7 +167,7 @@ module.exports = toolbox => {
   async function createMigration (params, migration_type, table_name) {
     const is_multiple_type = verify_multiple_type(migration_type)
 
-    const setupConfigured = await ntIsConfigured(filesystem, print);
+    const setupConfigured = await ntIsConfigured(filesystem, print)
     if (!setupConfigured) {
       return
     }

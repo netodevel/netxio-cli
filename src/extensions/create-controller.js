@@ -37,7 +37,7 @@ module.exports = toolbox => {
   }
 
   async function createController(class_name_param, package) {
-    let setupConfigured = await ntIsConfigured(filesystem, print);
+    let setupConfigured = await ntIsConfigured(filesystem, print)
 
     if (!setupConfigured) {
       return

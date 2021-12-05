@@ -28,8 +28,8 @@ test('given nt g:setup should create nt.json', async () => {
 
   const ntJson = filesystem.read('nt.json')
 
-  expect(ntJson).toContain(`javaProjects`)
-  expect(ntJson).toContain(`liquibase`)
+  expect(ntJson).toContain('javaProjects')
+  expect(ntJson).toContain('liquibase')
 
   // cleanup artifact
   filesystem.remove('nt.json')

@@ -1,6 +1,7 @@
 module.exports = toolbox => {
   const { print, prompt, filesystem, template } = toolbox
   const { structureMaven } = require('../core/maven')
+  const { ntIsConfigured } = require('../core/setup-validator')
   var Pluralize = require('pluralize')
 
   async function load_config_file() {
@@ -36,6 +37,12 @@ module.exports = toolbox => {
   }
 
   async function createController(class_name_param, package) {
+    let setupConfigured = await ntIsConfigured(filesystem, print);
+
+    if (!setupConfigured) {
+      return
+    }
+
     let config_file = await load_config_file()
     let destination_package = await resolver_destination_package(
       config_file,

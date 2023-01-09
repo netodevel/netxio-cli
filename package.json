@@ -39,7 +39,7 @@
     "node-datetime": "^2.1.2",
     "pluralize": "^8.0.0",
     "pom-parser": "^1.2.0",
-    "prettier": "^1.12.1",
+    "prettier": "^2.8.2",
     "standard": "^16.0.4"
   },
   "jest": {

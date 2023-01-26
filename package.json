@@ -33,7 +33,7 @@
     "chokidar": "^3.5.2",
     "escape-string-regexp": "^5.0.0",
     "java-parser": "^2.0.0",
-    "jest": "^24.1.0",
+    "jest": "^29.4.1",
     "js-yaml": "^4.1.0",
     "mustache": "^4.2.0",
     "node-datetime": "^2.1.2",
